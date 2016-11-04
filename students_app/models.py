@@ -22,9 +22,8 @@ class Post(models.Model):
 class Student(models.Model):
     name = models.CharField(max_length=50)
     date_of_birth = models.DateField(blank=True, null=True)
-    # card_number = models.
-    # group = models.CharField(max_length=15)
-    # group = FK group
+    card_number = models.CharField(max_length=9, blank=True, null=True)
+    student_group = models.ForeignKey("Group", verbose_name=(u"student_group"), blank=True, null=True)
     # photo
 
     # def publish(self):
@@ -37,5 +36,7 @@ class Student(models.Model):
 
 class Group(models.Model):
     title = models.CharField(max_length=15)
-    # head = FK student
+    head = models.ForeignKey("Student", verbose_name=(u"head"), blank=True, null=True)
 
+    def __str__(self):
+        return self.name
