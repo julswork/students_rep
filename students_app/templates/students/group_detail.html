@@ -1,0 +1,30 @@
+{% extends 'students/base.html' %}
+
+{% block content %}
+
+<div class="post">
+    <h1>{{ group.title }}</h1>
+</div>
+
+
+<table class="table table-hover">
+     <thead>
+     <tr>
+         <th>Group title</th>
+         <th>Head</th>
+         <th>Students</th>
+     </tr>
+     </thead>
+    <tbody>
+
+    <tr>
+        <td><p>{{ group.title }}</p></td>
+        <td><p><a href="{% url 'student_detail' pk=group.head.pk %}">{{ group.head }}</a></td>
+        <td>{% for student in group.student_set.all %}
+            <p><a href="{% url 'student_detail' pk=student.pk %}">{{ student }}</a></p>
+            {% endfor %}
+        </td>
+    </tr>
+
+    </tbody>
+</table>{% endblock %}

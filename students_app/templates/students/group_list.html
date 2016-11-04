@@ -1,0 +1,38 @@
+{% extends 'students/base.html' %}
+{% block content %}
+
+
+<table class="table table-hover">
+     <thead>
+     <tr>
+         <th>#</th>
+         <th>Group title</th>
+         <th>Head</th>
+         <th>Students amount</th>
+     </tr>
+     </thead>
+    <tbody>
+
+    {% for group in groups %}
+    <tr>
+        <th scope="row">1</th>
+        <td><p><a href="{% url 'group_detail' pk=group.pk %}">{{ group.title }}</a></td>
+        <td><p><a href="">{{ group.head }}</a></td>
+        <!--<td>{% for student in group.student_set.all %}-->
+            <!--<p><a href="">{{ student }}</a></p>-->
+            <!--{% endfor %}-->
+        <!--</td>-->
+        <td>
+            <p><a href="{% url 'group_detail' pk=group.pk %}">{{ group.student_set.all.count }}</a></p>
+        </td>
+    </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+
+
+{% endblock content %}
+
+
+

@@ -39,4 +39,4 @@ class Group(models.Model):
     head = models.ForeignKey("Student", verbose_name=(u"head"), blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return self.title
