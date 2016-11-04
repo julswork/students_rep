@@ -6,7 +6,7 @@ from .forms import PostForm
 from django.shortcuts import redirect
 
 from .models import Student, Group
-from .forms import PostForm
+from .forms import StudentForm
 
 
 
@@ -67,19 +67,19 @@ def student_detail(request, pk):
     student = get_object_or_404(Student, pk=pk)
     return render(request, 'students/student_detail.html', {'student': student})
 
-#
-# def post_new(request):
-#     if request.method == "POST":
-#         form = PostForm(request.POST)
-#         if form.is_valid():
-#             post = form.save(commit=False)
-#             post.author = request.user
-#             post.published_date = timezone.now()
-#             post.save()
-#             return redirect('students_app.views.post_detail', pk=post.pk)
-#     else:
-#         form = PostForm()
-#     return render(request, 'students/post_edit.html', {'form': form})
+
+def student_new(request):
+    if request.method == "POST":
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            student = form.save(commit=False)
+            # post.author = request.user
+            # post.published_date = timezone.now()
+            student.save()
+            return redirect('students_app.views.student_detail', pk=student.pk)
+    else:
+        form = StudentForm()
+    return render(request, 'students/student_edit.html', {'form': form})
 #
 #
 # def post_edit(request, pk):
