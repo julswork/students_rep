@@ -22,15 +22,13 @@
     <tr>
         <td><p>{{ student.name }}</p></td>
         <td><p>{{ student.card_number }}</p></td>
-
-        <!-- here we must be redirected to group_detail page with new url_address in line -->
-
-        <td><p><a href="{% url 'group_detail' pk=student.student_group.pk %}">{{ student.student_group }}</a></td>
+        <td><p><a href="{% url 'group_detail' pk=student.student_group.pk %}">
+            {{ student.student_group }}
+        </a></td>
         <td><p><a href="{% url 'student_detail' pk=student.student_group.head.pk %}">
-            {{ student.student_group.head }}</a></td>
+            {{ student.student_group.head }}
+        </a></td>
         <td><p>{{ student.date_of_birth }}</p></td>
-
-
     </tr>
 
     </tbody>
