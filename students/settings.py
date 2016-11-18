@@ -41,6 +41,7 @@ INSTALLED_APPS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'students_app.signals.SQLLogMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -81,6 +82,41 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     },
+#
+#     "new_db":
+#     {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'student_db',
+#         'USER': 'julia',
+#         'PASSWORD': 'Q1w2e3r4',
+#     }
+# }
+    # 'new_db': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'new_db.sqlite3'),
+    # }
+
+
+# DATABASES = {
+#
+#     'default': {
+
+        # 'ENGINE': 'django.db.backends.mysql',
+        # 'NAME': 'nxtlvl',
+        # 'USER': 'nxtlvl',
+        # 'PASSWORD': 'FrynJap9',
+
+#     }
+#
+# }
 
 
 # Internationalization

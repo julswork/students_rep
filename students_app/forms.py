@@ -13,7 +13,7 @@ class PostForm(forms.ModelForm):
 class StudentForm(forms.ModelForm):
     class Meta:
         model = Student
-        fields = ('name', 'date_of_birth', 'card_number', 'student_group',)
+        fields = ('name', 'card_number', 'date_of_birth',) #'date_of_birth', , 'student_group'
 
 
 class GroupForm(forms.ModelForm):
