@@ -23,7 +23,7 @@ class Student(models.Model):
     name = models.CharField(max_length=50)
     date_of_birth = models.DateField(blank=True, null=True)
     card_number = models.CharField(max_length=9, blank=True, null=True)
-    # student_group = models.ForeignKey("Group", verbose_name=(u"student_group"), blank=True, null=True)
+    student_group = models.ForeignKey("Group", verbose_name=(u"student_group"), blank=True, null=True)
     # photo
 
     # def publish(self):
