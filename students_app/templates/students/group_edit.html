@@ -1,10 +1,42 @@
 {% extends 'students/base.html' %}
 
 {% block content %}
-    <h1>New group</h1>
+    <h1>Edit group</h1>
     <form method="POST" class="post-form">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="save btn btn-default">Save</button>
     </form>
+
+<table class="table table-hover">
+     <thead>
+     <tr>
+         <th>Student name</th>
+         <th>Card number</th>
+     </tr>
+     </thead>
+    <tbody>
+    {% for student in group.student_set.all %}
+        <tr>
+            <td>
+                <p><a href="{% url 'student_detail' pk=student.pk %}">{{ student.name }}</a></p>
+            </td>
+            <td>
+                <p>{{ student.card_number }}</p>
+            </td>
+
+            <td>
+                <pre>s{{student.id}}</pre>
+                <pre>g{{group.id}}</pre>
+
+                <a href="{% url 'student_edit' pk=student.pk%}"><span class="glyphicon glyphicon-edit"></span></a>
+                <a href="{% url 'students_app.views.group_student_delete' id=student.id pk=group.pk%}"><span class="glyphicon glyphicon-remove"></span></a>
+
+            </td>
+        </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+
 {% endblock %}

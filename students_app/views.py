@@ -1,9 +1,11 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.utils import timezone
 from django.shortcuts import render, get_object_or_404
 from .models import Post
 from .forms import PostForm
 from django.shortcuts import redirect
+from django.core.urlresolvers import reverse
 
 from .models import Student, Group
 from .forms import StudentForm, GroupForm
@@ -74,8 +76,22 @@ def group_new(request):
             return redirect('students_app.views.group_detail', pk=group.pk)
     else:
         form = GroupForm()
-    return render(request, 'students/group_edit.html', {'form': form})
+    return render(request, 'students/group_new.html', {'form': form})
 
+
+def group_edit(request, pk):
+    group = get_object_or_404(Group, pk=pk)
+    if request.method == "POST":
+        form = GroupForm(request.POST, instance=group)
+        if form.is_valid():
+            group = form.save(commit=False)
+            # group.author = request.user
+            # group.published_date = timezone.now()
+            group.save()
+            return redirect('students_app.views.group_detail', pk=group.pk)
+    else:
+        form = GroupForm(instance=group)
+    return render(request, 'students/group_edit.html', {'form': form, 'group': group})
 
 
 def student_detail(request, pk):
@@ -84,29 +100,48 @@ def student_detail(request, pk):
 
 
 def student_new(request):
+    # group = Group.objects.get(pk=group.pk)
+    # print "form", group
     if request.method == "POST":
         form = StudentForm(request.POST)
+
         if form.is_valid():
             student = form.save(commit=False)
             # post.author = request.user
             # post.published_date = timezone.now()
+
             student.save()
             return redirect('students_app.views.student_detail', pk=student.pk)
     else:
         form = StudentForm()
-    return render(request, 'students/student_edit.html', {'form': form})
-#
-#
-# def post_edit(request, pk):
-#     post = get_object_or_404(Post, pk=pk)
-#     if request.method == "POST":
-#         form = PostForm(request.POST, instance=post)
-#         if form.is_valid():
-#             post = form.save(commit=False)
-#             post.author = request.user
-#             post.published_date = timezone.now()
-#             post.save()
-#             return redirect('students_app.views.post_detail', pk=post.pk)
-#     else:
-#         form = PostForm(instance=post)
-#     return render(request, 'students/post_edit.html', {'form': form})
+    return render(request, 'students/student_new.html', {'form': form})
+
+
+def student_edit(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+    group = student.student_group
+
+    if request.method == "POST":
+        form = StudentForm(request.POST, instance=student)
+        if form.is_valid():
+            group = form.save(commit=False)
+            # group.author = request.user
+            # group.published_date = timezone.now()
+            student.save()
+            return redirect('students_app.views.student_detail', pk=student.pk)
+    else:
+        form = StudentForm(instance=student)
+    return render(request, 'students/student_edit.html', {'form': form, 'student': student, 'group': group})
+
+
+def group_student_delete(request, id, pk):
+    group = get_object_or_404(Group, pk=pk)
+    student = get_object_or_404(Student, id=id)
+    student.delete()
+    return redirect('students_app.views.group_detail', group.pk)
+
+
+
+
+
+
