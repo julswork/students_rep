@@ -16,14 +16,15 @@ from django.contrib import admin
 
 
 from .views import (
-    create_mail_reminder, self_mail_reminder_by_id, delete_mail_reminder
+    login_user, create_mail_reminder, self_mail_reminder_by_id, delete_mail_reminder
 )
 
 
 urlpatterns = [
-    url(r'^$', create_mail_reminder),
+    url(r'^$', include(admin.site.urls)),
 
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^login$', login_user, name='login'),
 
     url(r'^reminder/$', create_mail_reminder), # add employeemailreminder or return all employeemailreminders for current employee
     url(r'^reminder/employee/(?P<employee_id>\d+)/$', create_mail_reminder), # add employeemailreminder or return all employeemailreminder for current employee

@@ -11,7 +11,9 @@ from models import (
 
 from datetime import datetime
 
-
+class LoginForm(forms.Form):
+    email = forms.EmailField(required=True)
+    password = forms.CharField(required=True, min_length=1)
 
 #
 # # class PasswordResetForm(forms.Form):

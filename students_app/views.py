@@ -2,8 +2,6 @@
 """
 Views for NXT LVL
 """
-import pprint
-from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.cache import never_cache
 from django.http import HttpResponseRedirect, JsonResponse
@@ -14,7 +12,7 @@ from django.template.response import TemplateResponse
 from django.views.decorators.http import require_http_methods
 import json
 from forms import (
-    EmployeeMailReminderForm,#, LoginForm
+    EmployeeMailReminderForm, LoginForm,
 )
 
 from django.contrib.auth import login, authenticate, logout
@@ -61,11 +59,16 @@ class EmailAuthBackend(object):
             return None
 
 
-@csrf_exempt
-@require_http_methods(['POST'])
+# @csrf_exempt
+# @require_http_methods(['POST'])
 def login_user(request):
-    f = LoginForm(data=request.json_body)
+    print "LOGIN USER"
+    print request
+    print "!!!", request.json_body
+    data=request.json_body
 
+    f = LoginForm(data=request.json_body)
+    print f
     if not f.is_valid():
         return JsonResponse(status=400, data=json.loads(f.errors.as_json()))
 
@@ -96,6 +99,7 @@ def accesscode(request, code):
     """
     Login with an accesscode
     """
+    print "ACCESSCODE"
     employee = Employee.objects.get(access_code=code)
     user = employee.user
     user.backend = 'django.contrib.auth.backends.ModelBackend'
@@ -177,10 +181,12 @@ def employees_json_id(request, employee_id):
 
 #*****************************
 
-@login_required_403
-@csrf_exempt
+# @login_required_403
+# @csrf_exempt
 def create_mail_reminder(request, employee_id=None):
+    print "Hello"
     current_user = request.user
+    print "Cur", current_user
     current_employee = current_user.employee_user
 
     fields = ['title', 'id', 'is_achieved', 'description', 'reminder_date', 'created_at']
@@ -190,10 +196,11 @@ def create_mail_reminder(request, employee_id=None):
     if employee_id:
         employee = Employee.objects.get(pk=int(employee_id))
 
-    current_employee.isHavePermissions(
-        employee, allow_manager=True, allow_su=True, allow_self=True, raise_exception=True,
-        exception_text="You don't have permissions to see Mail Reminders of this employee."
-    )
+    # TEMP
+    # current_employee.isHavePermissions(
+    #     employee, allow_manager=True, allow_su=True, allow_self=True, raise_exception=True,
+    #     exception_text="You don't have permissions to see Mail Reminders of this employee."
+    # )
 
     if request.method == 'POST':
         f = EmployeeMailReminderForm(data=request.json_body)
@@ -225,25 +232,28 @@ def create_mail_reminder(request, employee_id=None):
         return JsonResponse(data={"employeemailreminders": employeemailreminders}, status=200)
 
 
-@login_required_403
-@csrf_exempt
+# @login_required_403
+# @csrf_exempt
 def self_mail_reminder_by_id(request, employeemailreminder_id):
     """
     Get or Update employeemailreminder by id
 
     Not in use
     """
+    print "HELLO"
     current_user = request.user
+    print "CUR", current_user
     current_employee = current_user.employee_user
 
     fields = ['title', 'id', 'is_achieved', 'description', 'reminder_date', 'created_at']
 
     employeemailreminder = EmployeeMailReminder.objects.get(pk=employeemailreminder_id)
 
-    current_employee.isHavePermissions(
-        employeemailreminder.employee, allow_self=True, allow_manager=True, allow_su=True, raise_exception=True,
-        exception_text="You don't have access to mail reminders of this employee."
-    )
+    # TEMP
+    # current_employee.isHavePermissions(
+    #     employeemailreminder.employee, allow_self=True, allow_manager=True, allow_su=True, raise_exception=True,
+    #     exception_text="You don't have access to mail reminders of this employee."
+    # )
 
     if request.method == 'POST':
         f = EmployeeMailReminderForm(data=request.json_body)
@@ -268,10 +278,11 @@ def delete_mail_reminder(request, employeemailreminder_id):
 
     employeemailreminder = EmployeeMailReminder.objects.get(pk=employeemailreminder_id)
 
-    current_employee.isHavePermissions(
-        employeemailreminder.employee, allow_self=True, allow_manager=True, allow_su=True, raise_exception=True,
-        exception_text="You don't have access to mail reminders of this employee."
-    )
+    # TEMP
+    # current_employee.isHavePermissions(
+    #     employeemailreminder.employee, allow_self=True, allow_manager=True, allow_su=True, raise_exception=True,
+    #     exception_text="You don't have access to mail reminders of this employee."
+    # )
 
     if request.method == 'POST':
         employeemailreminder.delete()

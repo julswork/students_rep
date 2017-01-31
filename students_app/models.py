@@ -54,6 +54,9 @@ class Employee(CreatedAbstract, UpdatedAbstract):
     phone = models.CharField(verbose_name=_(u"phone"), max_length=40, default='')
     notes = models.TextField(null=True, blank=True)
 
+    def __unicode__(self):
+        return u'<{} (id: {})>'.format(self.user.username, self.id)
+
     class Meta:
         verbose_name = _(u'employee')
         verbose_name_plural = _(u'employees')
@@ -66,7 +69,7 @@ class EmployeeMailReminder(CreatedAbstract, UpdatedAbstract):
     title = models.TextField(verbose_name=_(u"mail reminder title"), null=True)
     description = models.TextField(verbose_name=_(u"description"), default='')
     employee = models.ForeignKey(Employee, verbose_name=_(u"employee"))
-    reminder_date = models.DateTimeField(verbose_name=_(u"updated at"), auto_now=True)
+    reminder_date = models.DateTimeField(verbose_name=_(u"reminder date"), auto_now=False)
     # employee = models.ForeignKey(Employee, related_name="goals")
     is_achieved = models.BooleanField(default=False)
 
