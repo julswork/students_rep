@@ -21,6 +21,9 @@ urlpatterns = [
 
     url(r'^student/delete/(?P<pk>[0-9]+)/(?P<id>[0-9]+)/$', views.group_student_delete),
 
+    url(r'^test/$', views.test, name='test'),
+
+
 
 
 

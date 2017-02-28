@@ -141,6 +141,32 @@ def group_student_delete(request, id, pk):
     return redirect('students_app.views.group_detail', group.pk)
 
 
+from django.http import HttpResponse
+
+def test(request):
+    print "Test"
+    import StringIO
+
+    output = StringIO.StringIO()
+    output.write('First line.\n')
+    output.write('Second line.\n')
+
+    f = output.getvalue()
+
+    # ics_f = icsfile.IcsFile(output, 'w')
+    # ics_f.write('test')
+
+    response = HttpResponse(f, content_type='application/ics')
+    response['Content-Disposition'] = 'attachment; filename=s.ics'
+    return response
+
+    #
+    # print "YYY", contents
+    #
+    #
+    #
+    #
+    # return render(request, 'students/test.html', {'contents': contents})
 
 
 
